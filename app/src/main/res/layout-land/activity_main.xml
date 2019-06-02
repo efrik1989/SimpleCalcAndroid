@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="50dp">
+
+    <TextView
+        android:id="@+id/editText"
+        style="@style/TextViewStyle"
+        android:layout_height="49dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="372dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_radius"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancelButton"
+                style="@style/ButtonStyleLand"
+                android:text="@string/cancelButton" />
+
+            <Button
+                android:id="@+id/openBracketButton"
+                style="@style/ButtonStyleLand"
+                android:text="@string/openBracketButton" />
+
+            <Button
+                android:id="@+id/closeBracketButton"
+                style="@style/ButtonStyleLand"
+                android:text="@string/closeBracketButton" />
+
+            <Button
+                android:id="@+id/backSpace"
+                style="@style/ButtonStyleLand"
+                android:text="@string/backSpace" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button7"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button7" />
+
+            <Button
+                android:id="@+id/button8"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button8" />
+
+            <Button
+                android:id="@+id/button9"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button9" />
+
+            <Button
+                android:id="@+id/buttonDivision"
+                style="@style/ButtonStyleLand"
+                android:text="@string/buttonDivision" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button4"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button4" />
+
+            <Button
+                android:id="@+id/button5"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button5" />
+
+            <Button
+                android:id="@+id/button6"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button6" />
+
+            <Button
+                android:id="@+id/buttonMultiplication"
+                style="@style/ButtonStyleLand"
+                android:text="@string/buttonMultiplication" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button1"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button1" />
+
+            <Button
+                android:id="@+id/button2"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button2" />
+
+            <Button
+                android:id="@+id/button3"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button3" />
+
+            <Button
+                android:id="@+id/buttonSubtraction"
+                style="@style/ButtonStyleLand"
+                android:text="@string/buttonSubtraction" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonPoint"
+                style="@style/ButtonStyleLand"
+                android:text="@string/buttonPoint" />
+
+            <Button
+                android:id="@+id/button0"
+                style="@style/ButtonStyleLand"
+                android:text="@string/button0" />
+
+            <Button
+                android:id="@+id/buttonEqually"
+                style="@style/ButtonStyleLand"
+                android:text="@string/buttonEqually" />
+
+            <Button
+                android:id="@+id/buttonAddition"
+                style="@style/ButtonStyleLand"
+                android:text="@string/buttonAddition" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
