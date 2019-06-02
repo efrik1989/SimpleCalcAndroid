@@ -64,3 +64,4 @@ class ServiceCalc {
         mTempText = new StringBuilder(tempText);
     }
 }
+
