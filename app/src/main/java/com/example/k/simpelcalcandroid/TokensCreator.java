@@ -25,13 +25,21 @@ class TokensCreator {
             symbol = expression.charAt(i);
             getTokens(symbol, i);
         }
+        for (String token : tokenList) {
+            System.out.println(token);
+        }
     }
 
     /**
      * Получение токена
      */
     private void getTokens(char symbol, int index) {
-        if (symbol != '/' && symbol != '*' && symbol != '+' && symbol != '-' && symbol != '(' && symbol != ')') {
+        if (symbol != '/'
+                && symbol != '*'
+                && symbol != '+'
+                && symbol != '-'
+                && symbol != '('
+                && symbol != ')') {
             temp.append(symbol);
             if (index == expression.length() - 1) {
                 tokenList.add(temp.toString());
@@ -39,12 +47,12 @@ class TokensCreator {
             }
         } else if (symbol == '-') {
             unoOperationsCheck(symbol, index);
-        } else {
+        } else if (symbol == '(' || symbol == ')') {
+            checkTempFullness();
+            checkForHiddenOperations(symbol, index);
+        }else {
 
-            if (temp.length() != 0) {
-                tokenList.add(temp.toString());
-                temp.setLength(0);
-            }
+            checkTempFullness();
             String s = "" + symbol;
             tokenList.add(s);
 
@@ -69,6 +77,53 @@ class TokensCreator {
             tokenList.add(temp.toString());
             temp.setLength(0);
             tokenList.add(temp.append(symbol).toString());
+            temp.setLength(0);
+        }
+    }
+
+    /**
+     * Проверка на скрытые операции (*)
+     */
+    private void checkForHiddenOperations(char symbol, int index) {
+        if (index != 0 && index != expression.length() - 1) {
+
+            if (symbol == '(' && expression.charAt(index - 1) != '/'
+                    && expression.charAt(index - 1) != '*'
+                    && expression.charAt(index - 1) != '+'
+                    && expression.charAt(index - 1) != '-'
+                    && expression.charAt(index - 1) != ')'
+                    && expression.charAt(index - 1) != '(') {
+                tokenList.add("*");
+                temp.append(symbol);
+                tokenList.add(temp.toString());
+                temp.setLength(0);
+
+            } else if (symbol == ')' && expression.charAt(index + 1) != '/'
+                    && expression.charAt(index + 1) != '*'
+                    && expression.charAt(index + 1) != '+'
+                    && expression.charAt(index + 1) != '-'
+                    && expression.charAt(index + 1) != ')') {
+                temp.append(symbol);
+                tokenList.add(temp.toString());
+                temp.setLength(0);
+                tokenList.add("*");
+
+            } else {temp.append(symbol);
+                tokenList.add(temp.toString());
+                temp.setLength(0);
+
+            }
+        } else {
+            temp.append(symbol);
+            tokenList.add(temp.toString());
+            temp.setLength(0);
+
+        }
+    }
+
+    private void checkTempFullness() {
+        if (temp.length() != 0){
+            tokenList.add(temp.toString());
             temp.setLength(0);
         }
     }

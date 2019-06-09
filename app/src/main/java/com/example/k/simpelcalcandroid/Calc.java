@@ -9,6 +9,7 @@ class Calc {
     private Stack numbersStack = new Stack();
     private Stack operatorsStack = new Stack();
     private String[] operatorsArray = {"/", "*", "-", "+"};
+    private boolean isCorrectExpression = true;
 
     Calc() {
     }
@@ -36,27 +37,30 @@ class Calc {
      * Логика вычислений
      *
      * @param expression выражение
-     * @return результат всего вычислений
+     * @return результат всего вычисления
      */
     String calculate(String expression) {
         TokensCreator tokensCreator = new TokensCreator(expression);
         HashMap<String, Integer> priorityMap = createPriorityMap();
+        checkBracketsPlacementAndQuantity(tokensCreator);
+        checkMistakesInExpression(tokensCreator);
 
-        //Перебор токенов
-        for (String token : tokensCreator.getTokenList()) {
-            if (token.matches("[/*+-]")) {
-                binaryOperatorsConditions(token, priorityMap);
-            } else if (token.matches("[()]")) {
-                bracketsConditions(token);
-            } else numbersStack.addToStack(token);
-        }
+        if (isCorrectExpression) {
+            //Перебор токенов
+            for (String token : tokensCreator.getTokenList()) {
+                if (token.matches("[/*+-]")) {
+                    binaryOperatorsConditions(token, priorityMap);
+                } else if (token.matches("[()]")) {
+                    bracketsConditions(token);
+                } else numbersStack.addToStack(token);
+            }
 
-        while (!operatorsStack.IsEmpty()) {
-            numbersStack.addToStack(doAction());
-        }
+            while (!operatorsStack.IsEmpty()) {
+                numbersStack.addToStack(doAction());
+            }
 
-        return checkNumbersAfterPoint((String) numbersStack.getTokenFromStack());
-
+            return checkNumbersAfterPoint((String) numbersStack.getTokenFromStack());
+        } else return "Неверно введено выражение";
     }
 
     /**
@@ -97,23 +101,24 @@ class Calc {
      * @param priorityMap карту приоритетов
      */
     private void binaryOperatorsConditions(String token, HashMap<String, Integer> priorityMap) {
+        String stackToken = (String)operatorsStack.getTokenFromStack();
+
         if (operatorsStack.IsEmpty()) {
             operatorsStack.addToStack(token);
 
         } else if (operatorsStack.getTokenFromStack().equals("(")
-                || priorityMap.get(token) > priorityMap.get(operatorsStack.getTokenFromStack())) {
+                || priorityMap.get(token) > priorityMap.get(stackToken)) {
             operatorsStack.addToStack(token);
 
-        } else if (priorityMap.get(token) <= priorityMap.get(operatorsStack.getTokenFromStack())) {
+        } else if (priorityMap.get(token) <= priorityMap.get(stackToken)) {
 
             while (!operatorsStack.IsEmpty()
                     && !operatorsStack.getTokenFromStack().equals("(")
                     && priorityMap.get(token)
-                    <= priorityMap.get(operatorsStack.getTokenFromStack())) {
+                    <= priorityMap.get(stackToken)) {
                 numbersStack.addToStack(doAction());
             }
             operatorsStack.addToStack(token);
-
         }
     }
 
@@ -125,14 +130,18 @@ class Calc {
             case "(":
                 operatorsStack.addToStack(token);
                 break;
-            case ")":
+            case ")": {
                 if (operatorsStack.getTokenFromStack().equals("(")) {
                     operatorsStack.remove();
                 } else while (!operatorsStack.getTokenFromStack().equals("(")) {
                     numbersStack.addToStack(doAction());
+                    if (operatorsStack.getTokenFromStack().equals("(")) {
+                        operatorsStack.remove();
+                        break;
+                    }
                 }
-                operatorsStack.remove();
                 break;
+            }
         }
     }
 
@@ -159,11 +168,42 @@ class Calc {
             }
         }
 
-        if (countAfterPoint == 1) {
+        if (countAfterPoint == 1
+                && resultOfExpression.charAt(resultOfExpression.length() - 1) == '0') {
             result = (int) Double.parseDouble(resultOfExpression);
         } else return resultOfExpression;
 
         return result + "";
+    }
+
+    /**
+     * Проверка корректного количества и расположения скобок
+     */
+    private void checkBracketsPlacementAndQuantity(TokensCreator tokensCreator) {
+        int countOpenBrackets = 0;
+        int countCloseBrackets = 0;
+        for (String token : tokensCreator.getTokenList()) {
+            if (token.equals("(")) {
+                countOpenBrackets++;
+            } else if (token.equals(")")) {
+                countCloseBrackets++;
+            }
+        }
+        if (countOpenBrackets < countCloseBrackets
+                || countOpenBrackets > countCloseBrackets) {
+            isCorrectExpression = false;
+        }
+    }
+
+    /**
+     * Проверка корректности выражения
+     */
+    private void checkMistakesInExpression(TokensCreator tokensCreator) {
+        for (String operator : operatorsArray) {
+            if (tokensCreator.getTokenList().get(tokensCreator.getTokenList().size() - 1).equals(operator)) {
+                isCorrectExpression = false;
+            }
+        }
     }
 }
 

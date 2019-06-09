@@ -20,7 +20,9 @@ class ServiceCalc {
             if (!symbolOfExpression.equals("=")
                     && !symbolOfExpression.equals("C")
                     && !symbolOfExpression.equals("B")) {
+                checkOperator(symbolOfExpression);
                 mTempText.append(symbolOfExpression);
+                checkBracketsNeighbour();
                 MainActivity.getTextView().setText(mTempText.toString());
             } else if (symbolOfExpression.equals("C")) {
                 cancel();
@@ -30,6 +32,7 @@ class ServiceCalc {
             else {
                 Calc calc = new Calc();
                 MainActivity.getTextView().setText(calc.calculate(mTempText.toString()));
+                setTempText(MainActivity.getTextView().getText().toString());
             }
         }
         System.out.println("String mTempText = " + mTempText);
@@ -62,6 +65,35 @@ class ServiceCalc {
 
     public void setTempText(String tempText) {
         mTempText = new StringBuilder(tempText);
+    }
+
+    /**
+     * Проверка на то, чтоб открывающая и закрывающая скобки рядом не стояли
+     */
+    private void checkBracketsNeighbour() {
+        if (mTempText.charAt(mTempText.length() - 1) == ')') {
+            if (mTempText.charAt(mTempText.length() - 2) == '(') {
+                mTempText.setLength(mTempText.length() - 2);
+            }
+        }
+    }
+
+    /**
+     * Проверка чтоб знаки операции друг за другом не стояли
+     * @param symbolOfExpression поступающий символ
+     */
+    private void checkOperator(String symbolOfExpression) {
+        if (mTempText.length() != 0) {
+            if (symbolOfExpression.matches("[/*+-]")) {
+                if (mTempText.charAt(mTempText.length() - 1) == '/'
+                        || mTempText.charAt(mTempText.length() - 1) == '*'
+                        || mTempText.charAt(mTempText.length() - 1) == '-'
+                        || mTempText.charAt(mTempText.length() - 1) == '+') {
+
+                    mTempText.setLength(mTempText.length() - 1);
+                }
+            }
+        }
     }
 }
 
