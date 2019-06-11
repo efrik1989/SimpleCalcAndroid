@@ -16,10 +16,11 @@ class ServiceCalc {
         if (symbolOfExpression != null) {
             if (mTempText == null) {
                 mTempText = new StringBuilder();
-            }
+            }else checkIncorrectTeg();
             if (!symbolOfExpression.equals("=")
                     && !symbolOfExpression.equals("C")
                     && !symbolOfExpression.equals("B")) {
+                checkPointPlacement(symbolOfExpression);
                 checkOperator(symbolOfExpression);
                 mTempText.append(symbolOfExpression);
                 checkBracketsNeighbour();
@@ -30,9 +31,12 @@ class ServiceCalc {
                 backSpaceButtonLogic();
             }
             else {
-                Calc calc = new Calc();
-                MainActivity.getTextView().setText(calc.calculate(mTempText.toString()));
-                setTempText(MainActivity.getTextView().getText().toString());
+                if (mTempText.length() != 0) {
+                    Calc calc = new Calc();
+                    String result = calc.calculate(mTempText.toString());
+                    MainActivity.getTextView().setText(result);
+                    setTempText(MainActivity.getTextView().getText().toString());
+                }
             }
         }
         System.out.println("String mTempText = " + mTempText);
@@ -72,8 +76,12 @@ class ServiceCalc {
      */
     private void checkBracketsNeighbour() {
         if (mTempText.charAt(mTempText.length() - 1) == ')') {
-            if (mTempText.charAt(mTempText.length() - 2) == '(') {
-                mTempText.setLength(mTempText.length() - 2);
+            if (mTempText.length() != 1) {
+                if (mTempText.charAt(mTempText.length() - 2) == '(') {
+                    mTempText.setLength(mTempText.length() - 2);
+                }
+            }else {
+                mTempText.setLength(mTempText.length() - 1);
             }
         }
     }
@@ -93,6 +101,30 @@ class ServiceCalc {
                     mTempText.setLength(mTempText.length() - 1);
                 }
             }
+        }
+    }
+
+    /**
+     * Проверка на повторяющуюся точку ('.')
+     * @param symbolOfExpression поступающий символ
+     */
+    private void checkPointPlacement(String symbolOfExpression) {
+        if (mTempText.length() != 0) {
+            if (symbolOfExpression.matches(".")) {
+                if (mTempText.charAt(mTempText.length() - 1) == '.') {
+
+                    mTempText.setLength(mTempText.length() - 1);
+                }
+            }
+        }
+    }
+
+    /**
+     * Убирание фразы о неверном выражении из текстового поля
+     */
+    private void checkIncorrectTeg() {
+        if (MainActivity.getTextView().getText().equals("Неверно введено выражение")) {
+            cancel();
         }
     }
 }

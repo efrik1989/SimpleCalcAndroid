@@ -67,12 +67,12 @@ class TokensCreator {
      * Проверка на унарные операции (-)
      */
     private void unoOperationsCheck(char symbol, int index) {
-        if (index == 0
-                || expression.charAt(index - 1) == '/'
-                || expression.charAt(index - 1) == '*'
-                || expression.charAt(index - 1) == '+'
-                || expression.charAt(index - 1) == '(') {
+        if (index == 0 || expression.charAt(index - 1) == '(') {
             temp.append(symbol);
+            if (index == 0 && expression.length() == 1) {
+                tokenList.add(temp.toString());
+                temp.setLength(0);
+            }
         } else {
             tokenList.add(temp.toString());
             temp.setLength(0);

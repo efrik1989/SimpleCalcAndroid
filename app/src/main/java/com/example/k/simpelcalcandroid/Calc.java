@@ -44,9 +44,9 @@ class Calc {
         HashMap<String, Integer> priorityMap = createPriorityMap();
         checkBracketsPlacementAndQuantity(tokensCreator);
         checkMistakesInExpression(tokensCreator);
+        checkFirstToken(tokensCreator);
 
         if (isCorrectExpression) {
-            //Перебор токенов
             for (String token : tokensCreator.getTokenList()) {
                 if (token.matches("[/*+-]")) {
                     binaryOperatorsConditions(token, priorityMap);
@@ -70,10 +70,8 @@ class Calc {
         double result = 0.0;
         String tempOperator = (String) operatorsStack.getTokenFromStack();
         double num1, num2;
-        num2 = Double.parseDouble((String) numbersStack.getTokenFromStack());
-        numbersStack.remove();
-        num1 = Double.parseDouble((String) numbersStack.getTokenFromStack());
-        numbersStack.remove();
+        num2 = parseDouble();
+        num1 = parseDouble();
 
         switch (tempOperator) {
             case "/":
@@ -199,11 +197,36 @@ class Calc {
      * Проверка корректности выражения
      */
     private void checkMistakesInExpression(TokensCreator tokensCreator) {
-        for (String operator : operatorsArray) {
-            if (tokensCreator.getTokenList().get(tokensCreator.getTokenList().size() - 1).equals(operator)) {
-                isCorrectExpression = false;
+        if (tokensCreator.getTokenList().size() != 0) {
+            for (String operator : operatorsArray) {
+                if (tokensCreator.getTokenList().get(tokensCreator.getTokenList().size() - 1).equals(operator)) {
+                    isCorrectExpression = false;
+                }
             }
+        } else {
+            isCorrectExpression = false;
         }
+    }
+
+    private void checkFirstToken(TokensCreator tokensCreator) {
+        if (tokensCreator.getTokenList().get(0).matches("[/*]]")) {
+            isCorrectExpression = false;
+        } else if (tokensCreator.getTokenList().get(0).equals("+")) {
+            tokensCreator.getTokenList().remove(0);
+        }
+    }
+
+    /**
+     * Парсинг в дробное число и проверка на нуль
+     * @return значение оперенда
+     */
+    private double parseDouble(){
+        double tempNum = 0;
+        if (numbersStack.getTokenFromStack() != null) {
+            tempNum = Double.parseDouble((String) numbersStack.getTokenFromStack());
+            numbersStack.remove();
+        }
+         return tempNum;
     }
 }
 

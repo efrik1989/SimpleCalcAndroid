@@ -44,6 +44,7 @@ class Stack {
     boolean IsEmpty() {
         return list.size() == 0;
     }
+
 }
 
 
